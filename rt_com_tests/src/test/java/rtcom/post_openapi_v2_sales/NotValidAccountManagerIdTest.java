@@ -1,7 +1,7 @@
-package com.peterservice.rtcom.post_openapi_v2_sales;
+package rtcom.post_openapi_v2_sales;
 
-import com.peterservice.rtcom.TestSteps.CommonObjects;
-import com.peterservice.rtcom.TestSteps.StepsSale;
+import rtcom.TestSteps.CommonObjects;
+import rtcom.TestSteps.StepsSale;
 import com.peterservice.rtcom.dto.ManagerBaseInfo;
 import com.peterservice.rtcom.dto.SaleCreateParams;
 import com.peterservice.rtcom.testdata.StatusCode;

@@ -1,4 +1,4 @@
-package com.peterservice.rtcom.TestSteps;
+package rtcom.TestSteps;
 
 import com.peterservice.rtcom.dto.*;
 import com.peterservice.rtcom.testdata.TestConstans;

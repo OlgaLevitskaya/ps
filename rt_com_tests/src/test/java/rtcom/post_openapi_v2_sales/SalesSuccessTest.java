@@ -1,8 +1,8 @@
-package com.peterservice.rtcom.post_openapi_v2_sales;
+package rtcom.post_openapi_v2_sales;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.peterservice.rtcom.TestSteps.CommonObjects;
-import com.peterservice.rtcom.TestSteps.StepsSale;
+import rtcom.TestSteps.CommonObjects;
+import rtcom.TestSteps.StepsSale;
 import com.peterservice.rtcom.dto.SaleCreateParams;
 import com.peterservice.rtcom.dto.SuccessResponse;
 import com.peterservice.rtcom.testdata.AllStage;

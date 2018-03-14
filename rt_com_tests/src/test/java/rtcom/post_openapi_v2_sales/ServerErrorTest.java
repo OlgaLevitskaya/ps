@@ -1,6 +1,6 @@
-package com.peterservice.rtcom.post_openapi_v2_sales;
+package rtcom.post_openapi_v2_sales;
 
-import com.peterservice.rtcom.TestSteps.StepsSale;
+import rtcom.TestSteps.StepsSale;
 import com.peterservice.rtcom.dto.ErrorResponse;
 import com.peterservice.rtcom.testdata.StatusCode;
 import com.peterservice.rtcom.tools.Props;

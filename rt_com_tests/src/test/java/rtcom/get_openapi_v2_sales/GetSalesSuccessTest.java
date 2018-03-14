@@ -1,6 +1,6 @@
-package com.peterservice.rtcom.get_openapi_v2_sales;
+package rtcom.get_openapi_v2_sales;
 
-import com.peterservice.rtcom.TestSteps.StepsSale;
+import rtcom.TestSteps.StepsSale;
 import com.peterservice.rtcom.dto.SaleList;
 import io.restassured.response.Response;
 import org.junit.Assert;

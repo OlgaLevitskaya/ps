@@ -1,4 +1,4 @@
-package com.peterservice.rtcom.TestSteps;
+package rtcom.TestSteps;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

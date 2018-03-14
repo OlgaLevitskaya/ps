@@ -1,6 +1,6 @@
-package com.peterservice.rtcom.get_openapi_v2_orders;
+package rtcom.get_openapi_v2_orders;
 
-import com.peterservice.rtcom.TestSteps.CommonObjects;
+import rtcom.TestSteps.CommonObjects;
 import com.peterservice.rtcom.dto.OrderList;
 import com.peterservice.rtcom.tools.ObjectMapperMethods;
 import com.peterservice.rtcom.tools.PrintLog;
@@ -8,7 +8,6 @@ import com.peterservice.rtcom.tools.Props;
 import com.peterservice.rtcom.testdata.StatusCode;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import junit.framework.TestSuite;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;

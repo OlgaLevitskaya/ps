@@ -1,6 +1,6 @@
-package com.peterservice.rtcom.post_openapi_v2_sales;
+package rtcom.post_openapi_v2_sales;
 
-import com.peterservice.rtcom.TestSteps.CommonObjects;
+import rtcom.TestSteps.CommonObjects;
 import com.peterservice.rtcom.testdata.StatusCode;
 import com.peterservice.rtcom.testdata.TestConstans;
 import com.peterservice.rtcom.tools.JsonMethods;
