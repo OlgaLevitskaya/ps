@@ -1,0 +1,28 @@
+{
+  "allStages": [
+    {
+      "stageId": "contact",
+      "label": "Уточнение потребностей клиента"
+    },
+    {
+      "stageId": "tv",
+      "label": "Проработка ТВ"
+    },
+    {
+      "stageId": "kp",
+      "label": "Создание КП"
+    },
+    {
+      "stageId": "dogovor",
+      "label": "Подготовка договора"
+    },
+    {
+      "stageId": "connect",
+      "label": "Подключение услуги"
+    },
+    {
+      "stageId": "billing",
+      "label": "Инициализация биллинга"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "sfaCustomerId": 1750,
+  "initialStep": "COMPLETE_CONTACT",
+
+  "contactPersons": [
+    {
+      "contactPersonId": 2201,
+      "fullName": "string",
+      "gender": {
+        "genderId": 0,
+        "name": "string"
+      }
+    }
+  ],
+  "accountManager": {
+    "login": "string",
+    "name": "string",
+    "fullName": "string",
+    "managerId": 321
+  },
+  "serviceManager": {
+    "login": "string",
+    "name": "string",
+    "fullName": "string",
+    "managerId": 321
+  },
+  "comment": "string",
+  "installationPayment": 1000,
+  "monthlyPayment": 200,
+  "plannedPeriod": 12
+}

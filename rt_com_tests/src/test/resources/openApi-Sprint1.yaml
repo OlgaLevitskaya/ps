@@ -1,0 +1,1038 @@
+swagger: '2.0'
+info:
+  description: >-
+    Описание сигнатур OpenAPI для продаж. Для получения токена необходимо
+    обратиться по ссылке
+    http://srv2-gf-app01:22022/openapi/v1/tokens-stub/get?login=MGF_BO_USER&password=1234567q
+    и запомнить полученный authToken. Например
+    http://srv2-gf-app01:22022/openapi/v1/customers/567?authToken=GreenField.AAC10SyJx2kVa-gKDrC68PG7E10wtFxPAVkos7woXFfDqcYs0GaebuQ
+  version: 1.0.1
+  title: Sales OpenAPI Signatures
+  termsOfService: ''
+  contact:
+    email: Alexander.Vasiliev@billing.ru
+  license:
+    name: no license yet
+    url: 'http://dummy.org'
+host: 'srv2-gf-app01:22022'
+basePath: /
+tags:
+  - name: sales
+    description: OpenAPI функции по продажам
+  - name: tasks
+    description: OpenAPI функции по задачам
+  - name: internal
+    description: Внутренние OpenAPI функции
+  - name: public
+    description: Публичные OpenAPI функции
+  - name: SFA
+    description: Функции SFA
+  - name: COM
+    description: Функции COM
+schemes:
+  - http
+paths:
+  /openapi/v2/sales:
+    get:
+      tags:
+        - sales
+        - public
+        - SFA
+      summary: Получить список продаж
+      description: Функция возвращает список продаж
+      operationId: saleSearchGet
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: sort
+          in: query
+          required: false
+          type: string
+          description: >-
+            Список атрибутов, используемых для сортировки. Параметр передается в
+            QueryString. По умолчанию сортировка идет по дате продажи в порядке
+            убывания. Подробнее о правилах создания постраничных функций можно
+            прочитать здесь:
+            https://confluence.billing.ru/pages/viewpage.action?pageId=15073798
+        - name: limit
+          in: query
+          default: 20
+          required: false
+          type: integer
+          format: int64
+          description: >-
+            Количество возвращаемых записей. Используется для постраничного
+            вывода. Подробнее в разделе «Постраничный
+            вывод»(https://confluence.billing.ru/pages/viewpage.action?pageId=15073821).
+        - name: offset
+          in: query
+          default: 0
+          required: false
+          type: integer
+          format: int64
+          description: >-
+            Задает правило определения номера записи, в наборе отфильтрованных и
+            отсортированных записей, с которой начинается вывод. Используется
+            для постраничного вывода. Подробнее в разделе «Постраничный
+            вывод»(https://confluence.billing.ru/pages/viewpage.action?pageId=15073821).
+        - name: returnCount
+          in: query
+          required: false
+          default: true
+          type: boolean
+          description: >-
+            Необходимость возврата информации о количестве записей,
+            удовлетворяющих параметрам фильтрации. Подробнее в разделе
+            «Постраничный
+            вывод»(https://confluence.billing.ru/pages/viewpage.action?pageId=15073821).
+        - name: saleIds
+          in: query
+          type: array
+          description: Идентификаторы продаж (= processId экземпляров БП COM)
+          items:
+            type: integer
+            format: int64
+        - name: processIds
+          in: query
+          type: array
+          description: Идентификаторы экземпляра бизнес-процесса в COM (UID)
+          items:
+            type: string
+        - name: saleNumber
+          in: query
+          type: string
+          description: 'Номер продажи, допускает поиск по подстроке (%)'
+        - name: sfaCustomerIds
+          in: query
+          type: array
+          description: 'Идентификатор клиента, которому ведется продажа'
+          items:
+            type: integer
+            format: int64
+        - name: sfaCustomerName
+          in: query
+          type: string
+          description: 'Имя клиента, допускает поиск по подстроке (%)'
+        - name: saleDateFrom
+          type: string
+          format: date-time
+          in: query
+          description: Начальная дата (включительно)
+        - name: saleDateTo
+          type: string
+          format: date-time
+          in: query
+          description: Конечная дата (включительно)
+        - name: currentStepIds
+          in: query
+          type: array
+          description: Идентификаторы этапов продаж
+          items:
+            type: integer
+            format: int64
+        - name: currentStepName
+          in: query
+          type: string
+          description: 'Наименование этапа продаж, допускает поиск по подстроке (%)'
+        - name: saleMarkerIds
+          in: query
+          type: array
+          description: Идентификаторы маркеров продаж
+          items:
+            type: integer
+            format: int64
+        - name: saleMarkerName
+          in: query
+          type: string
+          description: 'Наименование маркеров продаж, допускает поиск по подстроке (%)'
+        - name: contactPersonIds
+          in: query
+          type: array
+          description: Идентификаторы контактных лица продажи
+          items:
+            type: integer
+            format: int64
+        - name: contactPersonName
+          in: query
+          type: string
+          description: 'Полное имя контактных лица продажи, допускает поиск по подстроке (%)'
+        - name: accountManagerIds
+          in: query
+          type: array
+          description: Идентификаторы аккаунт-менеджеров
+          items:
+            type: integer
+            format: int64
+        - name: accountManagerName
+          in: query
+          type: string
+          description: 'Имя аккаунт-менеджера продажи, допускает поиск по подстроке (%)'
+        - name: serviceManagerIds
+          in: query
+          type: array
+          description: Идентификаторы сервис-менеджеров
+          items:
+            type: integer
+            format: int64
+        - name: serviceManagerName
+          in: query
+          type: string
+          description: 'Имя сервис-менеджера продажи, допускает поиск по подстроке (%)'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SaleList'
+        '400':
+          description: Bad Request - Неверно заданы входные параметры
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+        '500':
+          description: Internal Serever Error
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+    post:
+      tags:
+        - sales
+        - public
+        - COM
+      summary: Создать новую продажу
+      description: >-
+        Функция создает продажу (экземпляр бизнес-процесса) на клиенте. Для
+        создания продажи используется COM BE.
+      operationId: addSale
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: SaleCreateParams
+          description: 'Параметры, необходимые для создания продажи'
+          required: true
+          schema:
+            $ref: '#/definitions/SaleCreateParams'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SaleCreateResponse'
+        '400':
+          description: Bad Request - Неверно заданы входные параметры
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+        '500':
+          description: Internal Serever Error
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+      security:
+        - sales_auth:
+            - 'OAPISales:Create'
+  /openapi/v2/sales/search:
+    post:
+      tags:
+        - sales
+        - public
+        - SFA
+      summary: Получить список продаж
+      description: Функция возвращает список продаж
+      operationId: saleSearchPost
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: sort
+          in: query
+          required: false
+          type: string
+          description: >-
+            Список атрибутов, используемых для сортировки. Параметр передается в
+            QueryString. По умолчанию сортировка идет по дате продажи в порядке
+            убывания. Подробнее о правилах создания постраничных функций можно
+            прочитать здесь:
+            https://confluence.billing.ru/pages/viewpage.action?pageId=15073798
+        - name: limit
+          in: query
+          required: false
+          default: 20
+          type: integer
+          format: int64
+          description: >-
+            Количество возвращаемых записей. Используется для постраничного
+            вывода. Подробнее в разделе «Постраничный
+            вывод»(https://confluence.billing.ru/pages/viewpage.action?pageId=15073821).
+        - name: offset
+          in: query
+          required: false
+          default: 0
+          type: integer
+          format: int64
+          description: >-
+            Задает правило определения номера записи, в наборе отфильтрованных и
+            отсортированных записей, с которой начинается вывод. Используется
+            для постраничного вывода. Подробнее в разделе «Постраничный
+            вывод»(https://confluence.billing.ru/pages/viewpage.action?pageId=15073821).
+        - name: returnCount
+          in: query
+          required: false
+          default: true
+          type: boolean
+          description: >-
+            Необходимость возврата информации о количестве записей,
+            удовлетворяющих параметрам фильтрации. Подробнее в разделе
+            «Постраничный
+            вывод»(https://confluence.billing.ru/pages/viewpage.action?pageId=15073821).
+        - name: SalesFilter
+          in: body
+          description: Фильтры
+          required: false
+          schema:
+            $ref: '#/definitions/SalesFilter'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SaleList'
+        '400':
+          description: Bad Request - Неверно заданы входные параметры
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+        '500':
+          description: Internal Serever Error
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+  '/openapi/v2/sales/{saleId}':
+    get:
+      tags:
+        - sales
+        - public
+        - SFA
+      summary: Получить продажу по id
+      description: Функция возвращает объект продажи
+      operationId: getSaleById
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: saleId
+          in: path
+          description: Идентификатор продажи для изменения (= processId экземпляра БП COM)
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Sale'
+        '400':
+          description: Bad Request - Неверно заданы входные параметры
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+        '404':
+          description: Not Found - Продажа не найдена
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+      security:
+        - sales_auth:
+            - 'OAPISales:Base'
+  '/openapi/v2/sales/{saleId}/potential':
+    post:
+      tags:
+        - sales
+        - public
+        - SFA
+      summary: Сохранить потенциал в привязке к шагу
+      operationId: addSalePotential
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: SalePotentialCreateParams
+          description: 'Параметры, необходимые для создания потенциала шага продажи'
+          required: true
+          schema:
+            $ref: '#/definitions/SalePotentialCreateParams'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SalePotentialCreateResponse'
+        '400':
+          description: Bad Request - Неверно заданы входные параметры
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+        '500':
+          description: Internal Serever Error
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+      security:
+        - sales_auth:
+            - 'OAPISales:Provisioning'
+  '/openapi/v2/sales/potential/{salePotentialId}':
+    put:
+      tags:
+        - sales
+        - public
+        - SFA
+      summary: Изменить потенциал шага продажи по id
+      description: Функция выполняет возврат объекта продажи
+      operationId: getSaleById
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: salePotentialId
+          in: path
+          description: Идентификатор потенциала для изменения
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: SalePotentialUpdateParams
+          description: Параметры для обновления потенциала
+          required: true
+          schema:
+            $ref: '#/definitions/SalePotentialUpdateParams'
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad Request - Неверно заданы входные параметры
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+        '404':
+          description: Not Found - Продажа не найдена
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+      security:
+        - sales_auth:
+            - 'OAPISales:Base'
+  /ps/v2/sfa/sales/:
+    post:
+      tags:
+        - sales
+        - internal
+        - SFA
+      summary: Создать новую продажу
+      description: Функция создает продажу в SFA
+      operationId: addSaleSfa
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: SaleCreateParams
+          description: 'Параметры, необходимые для создания продажи'
+          required: true
+          schema:
+            $ref: '#/definitions/SfaSaleCreateParams'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SfaSaleCreateResponse'
+        '400':
+          description: Bad Request - Неверно заданы входные параметры
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+        '500':
+          description: Internal Serever Error
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+      security:
+        - sales_auth:
+            - 'OAPISales:Provisioning'
+  '/ps/v2/sfa/sales/{saleId}':
+    put:
+      tags:
+        - sales
+        - internal
+        - SFA
+      summary: Изменить атрибуты продажи
+      description: Функция выполняет изменение атрибутов продажи
+      operationId: updateSaleSfa
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: saleId
+          in: path
+          description: Идентификатор продажи для изменения (= processId экземпляра БП COM)
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: SaleUpdateParams
+          description: Параметры для обновления продажи
+          required: true
+          schema:
+            $ref: '#/definitions/SfaSaleUpdateParams'
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad Request - Неверно заданы входные параметры
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+        '404':
+          description: Not Found - Продажа не найдена
+          schema:
+            $ref: '#/definitions/ErrorDescription'
+      security:
+        - sales_auth:
+            - 'OAPISales:Provisioning'
+securityDefinitions:
+  sales_auth:
+    type: oauth2
+    authorizationUrl: >-
+      http://srv2-gf-app01:22022/openapi/v1/tokens-stub/get?login=MGF_BO_USER&password=1234567q
+    flow: implicit
+    scopes:
+      'OAPISales:Create': Создать продажу
+      'OAPISales:Base': Базовый доступ к продажам на чтение
+      'OAPISales:Provisioning': Доступ к CRUD-операциям SFA
+definitions:
+  Sale:
+    type: object
+    description: Объект продажи
+    properties:
+      saleId:
+        type: string
+        description: Идентификатор продажи (= processId экземпляра БП COM)
+      processId:
+        type: string
+        description: Идентификатор экземпляра бизнес-процесса в COM (UID)
+      saleNumber:
+        type: string
+        description: Номер продажи
+      status:
+        $ref: '#/definitions/SaleStatus'
+      createDate:
+        type: string
+        format: date-time
+        description: Дата создания продажи
+      closeDate:
+        type: string
+        format: date-time
+        description: Дата закрытия продажи
+      sfaCustomer:
+        $ref: '#/definitions/SfaCustomerBaseInfo'
+      sfaContract:
+        $ref: '#/definitions/SfaContractBaseInfo'
+      currentStep:
+        $ref: '#/definitions/SaleStep'
+      saleMarkers:
+        type: array
+        description: Маркеры продажи
+        items:
+          $ref: '#/definitions/SaleMarker'
+      contactPersons:
+        type: array
+        description: Контактные лица продажи
+        items:
+          $ref: '#/definitions/ContactPersonBaseInfo'
+      salePotentials:
+        type: array
+        description: Потенциал по шагам (этапам) продажи
+        items:
+          $ref: '#/definitions/SaleStepPotential'
+      accountManager:
+        $ref: '#/definitions/User'
+      serviceManager:
+        $ref: '#/definitions/User'
+      comment:
+        type: string
+        description: Комментарий
+  SaleStepPotential:
+    type: object
+    description: Потенциал продажи (в привязке к шагу)
+    properties:
+      salePotentialId:
+        type: integer
+        format: int64
+        description: id записи потенциала
+      saleStep:
+        $ref: '#/definitions/SaleStep'
+      revenueAmount:
+        type: number
+        description: Потенциал
+      potentialDate:
+        type: string
+        format: date-time
+        description: Дата фиксации потенциала
+  SalePotentialCreateParams:
+    type: object
+    description: Параметры создания потенциала продажи
+    required:
+      - revenueAmount
+    properties:
+      potentialStep:
+        $ref: '#/definitions/SaleStep'
+      revenueAmount:
+        type: number
+        description: Потенциал
+  SalePotentialCreateResponse:
+    type: object
+    required:
+      - revenueAmount
+    properties:
+      salePotentialId:
+        type: integer
+        format: int64
+        description: id записи потенциала
+      potentialDate:
+        type: string
+        format: date-time
+        description: Дата фиксации потенциала
+  SalePotentialUpdateParams:
+    type: object
+    description: Потенциал продажи (в привязке к шагу)
+    required:
+      - revenueAmount
+    properties:
+      revenueAmount:
+        type: number
+        description: Потенциал
+      potentialDate:
+        type: string
+        format: date-time
+        description: Дата фиксации потенциала
+  SalesFilter:
+    type: object
+    description: Критерии поиска
+    properties:
+      saleIds:
+        type: array
+        description: Идентификаторы продаж (= processId экземпляров БП COM)
+        items:
+          type: integer
+          format: int64
+      processIds:
+        type: array
+        description: Идентификаторы экземпляра бизнес-процесса в COM (UID)
+        items:
+          type: string
+      saleNumber:
+        type: string
+        description: 'Номер продажи, допускает поиск по подстроке (%)'
+      statusIds:
+        type: array
+        description: Идентификаторы статусов продаж
+        items:
+          type: string
+      statusName:
+        type: string
+        description: 'Наименование статуса продажи, допускает поиск по подстроке (%)'
+      createDate:
+        $ref: '#/definitions/DateTimeRange'
+      closeDate:
+        $ref: '#/definitions/DateTimeRange'
+      sfaCustomerIds:
+        type: array
+        description: 'Идентификатор клиента, которому ведется продажа'
+        items:
+          type: integer
+          format: int64
+      sfaCustomerName:
+        type: string
+        description: 'Имя клиента, допускает поиск по подстроке (%)'
+      sfaContractIds:
+        type: array
+        description: 'Идентификатор договора, привязанного к продаже'
+        items:
+          type: integer
+          format: int64
+      sfaContractNumber:
+        type: string
+        description: 'Номер договора, допускает поиск по подстроке (%)'
+      sfaContractDate:
+        $ref: '#/definitions/DateTimeRange'
+      currentStepIds:
+        type: array
+        description: Идентификаторы этапов продаж
+        items:
+          type: integer
+          format: int64
+      currentStepName:
+        type: string
+        description: 'Наименование этапа продаж, допускает поиск по подстроке (%)'
+      saleMarkerIds:
+        type: array
+        description: Идентификаторы маркеров продаж
+        items:
+          type: integer
+          format: int64
+      saleMarkerName:
+        type: string
+        description: 'Наименование маркеров продаж, допускает поиск по подстроке (%)'
+      contactPersonIds:
+        type: array
+        description: Идентификаторы контактных лица продажи
+        items:
+          type: integer
+          format: int64
+      contactPersonName:
+        type: string
+        description: 'Полное имя контактных лица продажи, допускает поиск по подстроке (%)'
+      accountManagerIds:
+        type: array
+        description: Идентификаторы аккаунт-менеджеров
+        items:
+          type: integer
+          format: int64
+      accountManagerName:
+        type: string
+        description: 'Имя аккаунт-менеджера продажи, допускает поиск по подстроке (%)'
+      serviceManagerIds:
+        type: array
+        description: Идентификаторы сервис-менеджеров
+        items:
+          type: integer
+          format: int64
+      serviceManagerName:
+        type: string
+        description: 'Имя сервис-менеджера продажи, допускает поиск по подстроке (%)'
+  SaleStep:
+    type: object
+    description: Этап продажи
+    required:
+      - saleStepId
+    properties:
+      saleStepId:
+        type: string
+        description: ключ (id) этапа продажи
+      name:
+        type: string
+        description: Наименование этапа продажи
+  SaleStatus:
+    type: object
+    description: Статус продажи
+    required:
+      - saleStatusId
+    properties:
+      saleStatusId:
+        type: string
+        description: ключ (id) статуса продажи
+      name:
+        type: string
+        description: Наименование статуса продажи
+  SaleMarker:
+    type: object
+    description: Маркер продажи
+    required:
+      - saleMarkerId
+    properties:
+      saleMarkerId:
+        type: integer
+        format: int64
+        description: id маркера продажи
+      name:
+        type: string
+        description: Наименование маркера продажи
+  ContactPersonBaseInfo:
+    type: object
+    description: Контактное лицо
+    required:
+      - contactPersonId
+    properties:
+      contactPersonId:
+        type: integer
+        format: int64
+        description: id контактного лица
+      fullName:
+        type: string
+        description: Полное имя контактного лица
+      gender:
+        $ref: '#/definitions/Gender'
+  SaleCreateParams:
+    type: object
+    description: Параметры создания продажи
+    required:
+      - sfaCustomerId
+    properties:
+      sfaCustomerId:
+        type: integer
+        format: int64
+        description: id клиента
+      initialStep:
+        $ref: '#/definitions/SaleStep'
+      saleMarkers:
+        type: array
+        description: Маркеры продажи
+        items:
+          $ref: '#/definitions/SaleMarker'
+      contactPersons:
+        type: array
+        description: Контактные лица продажи
+        items:
+          $ref: '#/definitions/ContactPersonBaseInfo'
+      accountManager:
+        $ref: '#/definitions/User'
+      serviceManager:
+        $ref: '#/definitions/User'
+      comment:
+        type: string
+        description: Комментарий
+  SaleCreateResponse:
+    type: object
+    required:
+      - saleId
+      - processId
+    properties:
+      saleId:
+        type: string
+        description: Идентификатор продажи (= processId экземпляра БП COM)
+      processId:
+        type: string
+        description: Идентификатор экземпляра процесса в COM (UID)
+      saleNumber:
+        type: string
+        description: Номер продажи
+      createDate:
+        type: string
+        format: date-time
+        description: Дата создания продажи
+      saleContractId:
+        type: integer
+        format: int64
+        description: id черновика договора, созданного для продажи
+  SfaSaleCreateParams:
+    description: >-
+      initialStep.name является обязательным (для дозаполнения спраочника шагов SFA)
+    allOf:
+      - $ref: '#/definitions/SaleCreateParams'
+      - type: object
+        properties:
+          processId:
+            type: string
+            description: >-
+              Идентификатор экземпляра бизнес-процесса в COM (UID)
+        required:
+          - processId
+  SfaSaleCreateResponse:
+    type: object
+    required:
+      - saleId
+    properties:
+      saleId:
+        type: integer
+        format: int64
+        description: Идентификатор продажи (= processId экземпляра БП COM)
+      saleNumber:
+        type: string
+        description: Номер продажи
+      saleDate:
+        type: string
+        format: date-time
+        description: Дата создания продажи
+  SfaSaleUpdateParams:
+    type: object
+    properties:
+      currentStep:
+        $ref: '#/definitions/SaleStep'
+      saleMarkers:
+        type: array
+        description: Маркеры продажи
+        items:
+          $ref: '#/definitions/SaleMarker'
+      contactPersons:
+        type: array
+        description: Контактные лица продажи
+        items:
+          $ref: '#/definitions/ContactPersonBaseInfo'
+      accountManager:
+        $ref: '#/definitions/User'
+      serviceManager:
+        $ref: '#/definitions/User'
+      comment:
+        type: string
+        description: Комментарий
+  SaleList:
+    type: object
+    description: Список продаж
+    required:
+      - listInfo
+    properties:
+      listInfo:
+        $ref: '#/definitions/ListInfo'
+      items:
+        type: array
+        description: Объекты продаж
+        xml:
+          wrapped: true
+          name: items
+        items:
+          $ref: '#/definitions/Sale'
+  SfaCustomerBaseInfo:
+    type: object
+    description: Базовая информация по клиенту
+    properties:
+      customerId:
+        type: integer
+        format: int64
+        description: id клиента
+      name:
+        type: string
+        description: Полное имя клиента
+  SfaContractBaseInfo:
+    type: object
+    description: Базовая информация по договору
+    properties:
+      contractId:
+        type: integer
+        format: int64
+        description: id договора
+      contractNumber:
+        type: string
+        description: Номер договора
+      contractDate:
+        type: string
+        format: date-time
+        description: Дата договора
+  Gender:
+    type: object
+    description: Пол
+    required:
+      - genderId
+    properties:
+      genderId:
+        type: integer
+        format: int64
+        description: id пола
+      name:
+        type: string
+        description: Наименование пола
+
+#Системные типы
+  User:
+    type: object
+    description: Сущность "пользователь", http://srv-docs02:10000/oapidoc/model/entities/User
+    required:
+      - cmsOperatorId
+    properties:
+      login:
+        type: string
+        description: Логин пользователя
+      name:
+        type: string
+        description: Имя пользователя
+      fullName:
+        type: string
+        description: Полное имя пользователя
+      cmsOperatorId:
+        type: integer
+        format: int64
+        description: Id оператора CMS (CPM)
+  ErrorDescription:
+    type: object
+    description: Сообщение об ошибке
+    required:
+      - serviceName
+      - errorCode
+      - userMessage
+    properties:
+      serviceName:
+        type: string
+        description: >-
+          имя конечного сервиса, при работе которого возникла ошибка, формат
+          <код подсистемы>/<версия подсистемы>/<внутренний код сервиса>,
+          например 'OAPI_AIR_BACKEND/001.00/getAddress'
+      errorCode:
+        type: string
+        description: >-
+          (обязательно) код ошибки (как правило символьный код соответствующий
+          конфликту, например 'SubscriberNotFound')
+      userMessage:
+        type: string
+        description: >-
+          Текст ошибки, который будет выведен пользователю, должен быть понятен
+          для пользователя, а не для разработчика
+      developerMessage:
+        type: string
+        description: (опционально) сообщение об ошибке для разработчика
+      internalErrors:
+        type: array
+        items:
+          $ref: '#/definitions/InternalErrorDescription'
+        description: >-
+          (опционально) массив внутренних ошибок (например ошибки
+          backend-функций, в случае ошибочного вызова композитной функции) Имеет
+          тип InternalErrorDescription наследуемый от ErrorDescription,
+          дополнительно содержит атрибут httpStatusCode
+      errorDetail:
+        type: string
+        description: >-
+          (опционально)  детализация кода ошибки ErrorDetail, возвращается
+          ORA-20nnn код ошибки для ORACLE-BACKEND (доработано в
+          OAPI_BACKEND_COMMON_LIB по CLM-191106)
+  InternalErrorDescription:
+    allOf:
+      - $ref: '#/definitions/ErrorDescription'
+      - type: object
+        properties:
+          httpStatusCode:
+            type: string
+            description: Код http-статуса
+        required:
+          - httpStatusCode
+  ListInfo:
+    type: object
+    description: >-
+      Информация о списке. Для функций с поддержкой постраничного вывода
+      структура listInfo должна возвращаться всегда. В случае, если список не
+      подерживает постраничный вывод, объект listInfo возвращается пустым (для
+      JSON  listinfo:null, для XML <listInfo/>
+    properties:
+      limit:
+        type: integer
+        format: int64
+        description: сколько записей было запрошено
+      offset:
+        type: integer
+        format: int64
+        description: начиная с какой записи выполнялся возврат
+      count:
+        type: integer
+        format: int64
+        description: >-
+          Общее количество записей в списке, удовлетворяющих параметрам
+          фильтрации. Возвращается только в случае, если параметр
+          returnCount=true и функция поддерживает возврат количества записей. В
+          противном случае поле отсутствует в ответе.
+  DateTimeRange:
+    type: object
+    description: >-
+      Фильтрация по диапазону дат. Подробнее на странице:
+      https://confluence.billing.ru/pages/viewpage.action?pageId=15073802
+    properties:
+      dateFrom:
+        type: string
+        format: date-time
+        description: Начальная дата (включительно)
+      dateTo:
+        type: string
+        format: date-time
+        description: Конечная дата (включительно)
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
